@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       routerDelegate: _router.routerDelegate,
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
+      title: "ASCEND",
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
         backgroundColor: Colors.white,
