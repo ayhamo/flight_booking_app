@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import '../home_widgets/top_bar_contents.dart';
 import '../Data.dart';
+// ignore: unused_import
 import '../Models/FlightTicketDetails.dart';
 import '../api_controller.dart';
 import '../home_widgets/responsive.dart';
@@ -31,30 +31,41 @@ class MyTicketsState extends State<MyTickets> {
   late Response response;
 
   Future _getTickets() async {
-    try {
-      response =
-          await ApiController.get("/Ticket/ViewTicket?userId=${Data.user?.id}");
-      if (response.statusCode == 200) {
-        if (response.data.toString() == "{}") {
-          setState(() {
-            loading = false;
-            noFlights = true;
-          });
-        } else {
-          setState(() {
-            Data.userFlights =
-                FlightTicketDetails.parseFlightDetails(response.data);
-
-            loading = false;
-          });
-        }
-      }
-    } on Exception catch (e) {
-      Data.apiError(context, e.toString());
-      if (kDebugMode) {
-        print(e);
-      }
+    Future.delayed(Duration(seconds: rng.nextInt(15)));
+    if(Data.userFlights.isEmpty){
+      setState(() {
+        loading = false;
+        noFlights = true;
+      });
+    }else{
+      setState(() {
+        loading = false;
+      });
     }
+    // try {
+    //   response =
+    //       await ApiController.get("/Ticket/ViewTicket?userId=${Data.user?.id}");
+    //   if (response.statusCode == 200) {
+    //     if (response.data.toString() == "{}") {
+    //       setState(() {
+    //         loading = false;
+    //         noFlights = true;
+    //       });
+    //     } else {
+    //       setState(() {
+    //         Data.userFlights =
+    //             FlightTicketDetails.parseFlightDetails(response.data);
+    //
+    //         loading = false;
+    //       });
+    //     }
+    //   }
+    // } on Exception catch (e) {
+    //   Data.apiError(context, e.toString());
+    //   if (kDebugMode) {
+    //     print(e);
+    //   }
+    // }
   }
 
   @override
@@ -560,9 +571,9 @@ class MyTicketsState extends State<MyTickets> {
 
   String formatDate(bool isDep, int index) {
     if (isDep) {
-      return Data.userFlights[index].ticket.departureDate.substring(11, 16);
+      return Data.userFlights[index].ticket.departureDate;//.substring(11, 16);
     } else {
-      return Data.userFlights[index].ticket.landingDate.substring(11, 16);
+      return Data.userFlights[index].ticket.landingDate;//.substring(11, 16);
     }
   }
 }

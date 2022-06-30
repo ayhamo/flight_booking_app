@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -225,31 +224,38 @@ class _UserRegisterState extends State<UserRegister> {
                               )),
                           onTap: () async {
                             if ((_formKey.currentState!.validate())) {
-                              try {
-                                String email =
-                                    emailController.text.replaceAll("@", "%40");
-                                // User/Register?name=op&lastname=op&email=op%40op.com&password=123
-                                response = await ApiController.post(
-                                    "/User/Register?name=${firstnameController.text}&lastname=${lastnameController.text}&email=$email&password=${passController.text}");
-                                if (response.statusCode == 200) {
-                                  if (response.data["message"] ==
-                                      "Email Already Taken.") {
-                                    Data.apiError(
-                                        context, response.data["message"]);
-                                  } else {
-                                    Data.user = User.fromJson(response.data);
-                                    Router.neglect(
-                                        context, () => context.go('/'));
-                                  }
-                                }
+                              Data.user = User(
+                                  id: 1,
+                                  firstName: firstnameController.text,
+                                  email: emailController.text,
+                                  password: passController.text,
+                                  lastName: lastnameController.text);
+                              Router.neglect(context, () => context.go('/'));
+                              setState(() {});
 
-                                setState(() {});
-                              } on Exception catch (e) {
-                                Data.apiError(context, e.toString());
-                                if (kDebugMode) {
-                                  print(e);
-                                }
-                              }
+                              //   try {
+                              //     String email =
+                              //         emailController.text.replaceAll("@", "%40");
+                              //     response = await ApiController.post(
+                              //         "/User/Register?name=${firstnameController.text}&lastname=${lastnameController.text}&email=$email&password=${passController.text}");
+                              //     if (response.statusCode == 200) {
+                              //       if (response.data["message"] ==
+                              //           "Email Already Taken.") {
+                              //         Data.apiError(
+                              //             context, response.data["message"]);
+                              //       } else {
+                              //         Data.user = User.fromJson(response.data);
+                              //         Router.neglect(
+                              //             context, () => context.go('/'));
+                              //       }
+                              //     }
+                              //     setState(() {});
+                              //   } on Exception catch (e) {
+                              //     Data.apiError(context, e.toString());
+                              //     if (kDebugMode) {
+                              //       print(e);
+                              //     }
+                              //   }
                             }
                           },
                         ),

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -133,52 +132,79 @@ class _RestPassState extends State<RestPass> {
                                   )),
                               onTap: () async {
                                 if ((_formKey.currentState!.validate())) {
-                                  try {
-                                    response = await ApiController.post(widget
-                                                .type ==
-                                            0
-                                        ? "/User/ChangePassword?id=${widget.id}&password=${passController.text}"
-                                        : "/Company/ChangePassword?id=${widget.id}&password=${passController.text}");
-                                    if (response.statusCode == 200) {
-                                      if (response.data["message"] ==
-                                          "Password Changed Successfully.") {
-                                        showDialog<void>(
-                                            context: context,
-                                            barrierDismissible: true,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: const Text(
-                                                  'ALERT',
-                                                  style: TextStyle(
-                                                      color: Colors.green),
-                                                ),
-                                                content: Text(
-                                                    '${response.data["message"]}',
-                                                    style: const TextStyle(
-                                                        fontSize: 17)),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    child: const Text('LOGIN!'),
-                                                    onPressed: () {
-                                                      Router.neglect(
-                                                          context,
-                                                          () => context.go(
-                                                              '/userLogin'));
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            });
-                                      }
-                                    }
-
-                                    setState(() {});
-                                  } on Exception catch (e) {
-                                    Data.apiError(context, e.toString());
-                                    if (kDebugMode) {
-                                      print(e);
-                                    }
-                                  }
+                                  showDialog<void>(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                            'ALERT',
+                                            style:
+                                                TextStyle(color: Colors.green),
+                                          ),
+                                          content: const Text(
+                                              'Password changed successfully!',
+                                              style: TextStyle(
+                                                  fontSize: 17)),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: const Text('LOGIN!'),
+                                              onPressed: () {
+                                                Router.neglect(
+                                                    context,
+                                                    () => context
+                                                        .go('/userLogin'));
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                  // try {
+                                  //   response = await ApiController.post(widget
+                                  //               .type ==
+                                  //           0
+                                  //       ? "/User/ChangePassword?id=${widget.id}&password=${passController.text}"
+                                  //       : "/Company/ChangePassword?id=${widget.id}&password=${passController.text}");
+                                  //   if (response.statusCode == 200) {
+                                  //     if (response.data["message"] ==
+                                  //         "Password Changed Successfully.") {
+                                  //       showDialog<void>(
+                                  //           context: context,
+                                  //           barrierDismissible: true,
+                                  //           builder: (BuildContext context) {
+                                  //             return AlertDialog(
+                                  //               title: const Text(
+                                  //                 'ALERT',
+                                  //                 style: TextStyle(
+                                  //                     color: Colors.green),
+                                  //               ),
+                                  //               content: Text(
+                                  //                   '${response.data["message"]}',
+                                  //                   style: const TextStyle(
+                                  //                       fontSize: 17)),
+                                  //               actions: <Widget>[
+                                  //                 TextButton(
+                                  //                   child: const Text('LOGIN!'),
+                                  //                   onPressed: () {
+                                  //                     Router.neglect(
+                                  //                         context,
+                                  //                         () => context.go(
+                                  //                             '/userLogin'));
+                                  //                   },
+                                  //                 ),
+                                  //               ],
+                                  //             );
+                                  //           });
+                                  //     }
+                                  //   }
+                                  //
+                                  //   setState(() {});
+                                  // } on Exception catch (e) {
+                                  //   Data.apiError(context, e.toString());
+                                  //   if (kDebugMode) {
+                                  //     print(e);
+                                  //   }
+                                  // }
                                 }
                               }),
                         ),

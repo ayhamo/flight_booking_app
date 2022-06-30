@@ -214,7 +214,6 @@ class FlightSelectionState extends State<FlightSelection> {
                         if (to != "To" && from != "From") {
                           context.push(
                               "/searchFlight?from=$from&fromCode=$fromCode&to=$to&toCode=$toCode&depDate=${formatDate()}&numOfPpl=$pplCount&class=${cabinClasses[index].replaceAll("\nCLASS", "")}"
-                              // "/searchFlight?from=ff&to=r&depDate=2022-05-09&numOfPpl=1&class=Economy"
                               );
                         } else {
                           showDialog<void>(

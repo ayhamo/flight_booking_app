@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:avatar_glow/avatar_glow.dart';
@@ -31,11 +32,25 @@ class FlightManagementState extends State<FlightManagement> {
   late Response response;
 
   Future _getFlights() async {
+    String json = r'''[
+      {
+        "id": 2,
+        "companyId": 1,
+        "from": "Kuwait",
+        "to": "Turkey",
+        "departureDate": "2023-04-23T10:07:43.511",
+        "landingDate": "2023-04-23T14:25:43.511",
+        "ticketContentEconomyPrice": 600
+      }
+    ]''';
+    var rng = Random();
+    var jsonList = jsonDecode(json) as List<dynamic>;
+    Future.delayed(Duration(seconds: rng.nextInt(10)));
     try {
-      response = await ApiController.post(
-          "/TicketContent/CompaniesFlights?companyId=${Data.company!.id}");
-      if (response.statusCode == 200) {
-        List<dynamic> check = (response.data) as List<dynamic>;
+      // response = await ApiController.post(
+      //     "/TicketContent/CompaniesFlights?companyId=${Data.company!.id}");
+      if (/* response.statusCode == 200 */ true) {
+        List<dynamic> check = (/*response.data*/ jsonList) as List<dynamic>;
         if (check.isEmpty) {
           setState(() {
             loading = false;
@@ -43,7 +58,8 @@ class FlightManagementState extends State<FlightManagement> {
           });
         } else {
           setState(() {
-            Data.companyFlights = CompanyFlights.parseFlights(response.data);
+            Data.companyFlights =
+                CompanyFlights.parseFlights(/*response.data*/ jsonList);
             loading = false;
           });
         }
@@ -147,7 +163,7 @@ class FlightManagementState extends State<FlightManagement> {
                                         ),
                                         Spacer(),
                                         Text(
-                                          "We have No Flights Available For your destination\nGo Back and Try other Flights we Provide.",
+                                          "No Flights are Available the company\nGo Back and add new flights.",
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: Colors.white),

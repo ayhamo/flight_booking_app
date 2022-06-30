@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -215,91 +214,142 @@ class _AccountManagementState extends State<AccountManagement> {
                                     )),
                                 onTap: () async {
                                   if ((_formKey.currentState!.validate())) {
-                                    try {
-                                      String email = emailController.text
-                                          .replaceAll("@", "%40");
-                                      response = await ApiController.post(Data
-                                                  .user !=
-                                              null
-                                          ? "/User/Update?userId=${Data.user?.id}&name=${firstnameController.text}&lastName=${lastnameController.text}&password=${passController.text}&email=$email"
-                                          : "/Company/Update?companyId=${Data.company?.id}&name=${firstnameController.text}&email=$email&password=${passController.text}");
-                                      if (response.statusCode == 200) {
-                                        if (response.data["message"] !=
-                                            "User informations Changed Successfully.") {
-                                          Data.apiError(
-                                              context, "An error occurred");
-                                        } else {
-                                          showDialog(
-                                              barrierDismissible: false,
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: const Text(
-                                                    'ALERT',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                  content: const Text(
-                                                      'Data Changed Successfully',
-                                                      style: TextStyle(
-                                                          fontSize: 17)),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      child: const Text('OK'),
-                                                      onPressed: () {
-                                                        if (Data.user != null) {
-                                                          User nuser = User(
-                                                              id: Data.user!.id,
-                                                              firstName:
-                                                                  firstnameController
-                                                                      .text,
-                                                              email:
-                                                                  emailController
-                                                                      .text,
-                                                              password:
-                                                                  passController
-                                                                      .text,
-                                                              lastName:
-                                                                  lastnameController
-                                                                      .text);
-                                                          Data.user = nuser;
-                                                        } else {
-                                                          Company ncompany =
-                                                              Company(
-                                                            id: Data
-                                                                .company!.id,
-                                                            name:
-                                                                firstnameController
-                                                                    .text,
-                                                            email:
-                                                                emailController
-                                                                    .text,
-                                                            password:
-                                                                passController
-                                                                    .text,
-                                                          );
-                                                          Data.company =
-                                                              ncompany;
-                                                        }
-                                                        Router.neglect(
-                                                            context,
-                                                            () => context
-                                                                .go('/'));
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              });
-                                        }
-                                      }
+                                    showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                              'ALERT',
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                            content: const Text(
+                                                'Data Changed Successfully',
+                                                style: TextStyle(fontSize: 17)),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: const Text('OK'),
+                                                onPressed: () {
+                                                  if (Data.user != null) {
+                                                    User nuser = User(
+                                                        id: Data.user!.id,
+                                                        firstName:
+                                                            firstnameController
+                                                                .text,
+                                                        email: emailController
+                                                            .text,
+                                                        password:
+                                                            passController.text,
+                                                        lastName:
+                                                            lastnameController
+                                                                .text);
+                                                    Data.user = nuser;
+                                                  } else {
+                                                    Company ncompany = Company(
+                                                      id: Data.company!.id,
+                                                      name: firstnameController
+                                                          .text,
+                                                      email:
+                                                          emailController.text,
+                                                      password:
+                                                          passController.text,
+                                                    );
+                                                    Data.company = ncompany;
+                                                  }
+                                                  Router.neglect(context,
+                                                      () => context.go('/'));
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
 
-                                      setState(() {});
-                                    } on Exception catch (e) {
-                                      Data.apiError(context, e.toString());
-                                      if (kDebugMode) {
-                                        print(e);
-                                      }
-                                    }
+                                    // try {
+                                    //   String email = emailController.text
+                                    //       .replaceAll("@", "%40");
+                                    //   response = await ApiController.post(Data
+                                    //               .user !=
+                                    //           null
+                                    //       ? "/User/Update?userId=${Data.user?.id}&name=${firstnameController.text}&lastName=${lastnameController.text}&password=${passController.text}&email=$email"
+                                    //       : "/Company/Update?companyId=${Data.company?.id}&name=${firstnameController.text}&email=$email&password=${passController.text}");
+                                    //   if (response.statusCode == 200) {
+                                    //     if (response.data["message"] !=
+                                    //         "User informations Changed Successfully.") {
+                                    //       Data.apiError(
+                                    //           context, "An error occurred");
+                                    //     } else {
+                                    //       showDialog(
+                                    //           barrierDismissible: false,
+                                    //           context: context,
+                                    //           builder: (BuildContext context) {
+                                    //             return AlertDialog(
+                                    //               title: const Text(
+                                    //                 'ALERT',
+                                    //                 style: TextStyle(
+                                    //                     color: Colors.red),
+                                    //               ),
+                                    //               content: const Text(
+                                    //                   'Data Changed Successfully',
+                                    //                   style: TextStyle(
+                                    //                       fontSize: 17)),
+                                    //               actions: <Widget>[
+                                    //                 TextButton(
+                                    //                   child: const Text('OK'),
+                                    //                   onPressed: () {
+                                    //                     if (Data.user != null) {
+                                    //                       User nuser = User(
+                                    //                           id: Data.user!.id,
+                                    //                           firstName:
+                                    //                               firstnameController
+                                    //                                   .text,
+                                    //                           email:
+                                    //                               emailController
+                                    //                                   .text,
+                                    //                           password:
+                                    //                               passController
+                                    //                                   .text,
+                                    //                           lastName:
+                                    //                               lastnameController
+                                    //                                   .text);
+                                    //                       Data.user = nuser;
+                                    //                     } else {
+                                    //                       Company ncompany =
+                                    //                           Company(
+                                    //                         id: Data
+                                    //                             .company!.id,
+                                    //                         name:
+                                    //                             firstnameController
+                                    //                                 .text,
+                                    //                         email:
+                                    //                             emailController
+                                    //                                 .text,
+                                    //                         password:
+                                    //                             passController
+                                    //                                 .text,
+                                    //                       );
+                                    //                       Data.company =
+                                    //                           ncompany;
+                                    //                     }
+                                    //                     Router.neglect(
+                                    //                         context,
+                                    //                         () => context
+                                    //                             .go('/'));
+                                    //                   },
+                                    //                 ),
+                                    //               ],
+                                    //             );
+                                    //           });
+                                    //     }
+                                    //   }
+                                    //
+                                    //   setState(() {});
+                                    // } on Exception catch (e) {
+                                    //   Data.apiError(context, e.toString());
+                                    //   if (kDebugMode) {
+                                    //     print(e);
+                                    //   }
+                                    // }
                                   }
                                 },
                               ),

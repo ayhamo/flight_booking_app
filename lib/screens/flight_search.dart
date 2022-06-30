@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:avatar_glow/avatar_glow.dart';
@@ -50,19 +51,53 @@ class FlightSearchState extends State<FlightSearch> {
   late Response response;
 
   Future _searchFlights() async {
+    //TODO ABLE TO ADD MORE FLIGHTS HERE
+    String json = r'''  
+    [
+      {
+        "id": 2,
+        "flightId": 1,
+        "companyName": "Turkish Airlines",
+        "economyCapacity": 100,
+        "economyPrice": 500,
+        "bussinesCapacity": 20,
+        "bussinesPrice": 1500,
+        "firstClassCapacity": 10,
+        "firstClassPrice": 6000,
+        "flightDepartureDate": "2023-04-23T10:25:43.511",
+        "flightLandingDate": "2023-04-23T18:35:43.511"
+      },
+      {
+        "id": 2,
+        "flightId": 1,
+        "companyName": "Qatar Airlines",
+        "economyCapacity": 100,
+        "economyPrice": 700,
+        "bussinesCapacity": 20,
+        "bussinesPrice": 2500,
+        "firstClassCapacity": 10,
+        "firstClassPrice": 9000,
+        "flightDepartureDate": "2023-04-23T08:25:43.511",
+        "flightLandingDate": "2023-04-23T17:35:43.511"
+      }
+    ]''';
+    var rng = Random();
+    var jsonList = jsonDecode(json) as List<dynamic>;
+    Future.delayed(Duration(seconds: rng.nextInt(10)));
+
     try {
-      response = await ApiController.post(
-          "/TicketContent/SearchOneFlight?from=${widget.from}&to=${widget.to}&DepartureDate=${widget.depDate}T00%3A00%3A00&numberOfSeat=${widget.numPpl}&cabinClass=${widget.cClass}");
-      if (response.statusCode == 200) {
-        List<dynamic> check = (response.data) as List<dynamic>;
-        if (check.isEmpty) {
+      // response = await ApiController.post(
+      //     "/TicketContent/SearchOneFlight?from=${widget.from}&to=${widget.to}&DepartureDate=${widget.depDate}T00%3A00%3A00&numberOfSeat=${widget.numPpl}&cabinClass=${widget.cClass}");
+      if (/*response.statusCode == 200*/ true) {
+        List<dynamic> check = (/*response.data*/ jsonList) as List<dynamic>;
+        if (/*check.isEmpty*/rng.nextInt(10) < 3) { //30% of doing condition
           setState(() {
             loading = false;
             noFlights = true;
           });
         } else {
           setState(() {
-            Data.flights = Flight.parseFlights(response.data);
+            Data.flights = Flight.parseFlights(/*response.data*/ jsonList);
             loading = false;
           });
         }

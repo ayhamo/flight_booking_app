@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -200,30 +199,39 @@ class _UserLoginState extends State<UserLogin> {
                               )),
                           onTap: () async {
                             if ((_formKey.currentState!.validate())) {
-                              try {
-                                String email =
-                                    emailController.text.replaceAll("@", "%40");
-                                response = await ApiController.post(
-                                    "/User/Login?email=$email&password=${passController.text}");
-                                if (response.statusCode == 200) {
-                                  if (response.data["message"] ==
-                                      "Account Not Found.") {
-                                    Data.apiError(
-                                        context, response.data["message"]);
-                                  } else {
-                                    Data.user = User.fromJson(response.data);
-                                    Router.neglect(
-                                        context, () => context.go('/'));
-                                  }
-                                }
+                              Data.user = User(
+                                  id: 1,
+                                  firstName: "User",
+                                  email: emailController.text,
+                                  password: passController.text,
+                                  lastName: "Test");
+                              Router.neglect(context, () => context.go('/'));
+                              setState(() {});
 
-                                setState(() {});
-                              } on Exception catch (e) {
-                                Data.apiError(context, e.toString());
-                                if (kDebugMode) {
-                                  print(e);
-                                }
-                              }
+                              // try {
+                              //   String email =
+                              //       emailController.text.replaceAll("@", "%40");
+                              //   response = await ApiController.post(
+                              //       "/User/Login?email=$email&password=${passController.text}");
+                              //   if (response.statusCode == 200) {
+                              //     if (response.data["message"] ==
+                              //         "Account Not Found.") {
+                              //       Data.apiError(
+                              //           context, response.data["message"]);
+                              //     } else {
+                              //       Data.user = User.fromJson(response.data);
+                              //       Router.neglect(
+                              //           context, () => context.go('/'));
+                              //     }
+                              //   }
+                              //
+                              //   setState(() {});
+                              // } on Exception catch (e) {
+                              //   Data.apiError(context, e.toString());
+                              //   if (kDebugMode) {
+                              //     print(e);
+                              //   }
+                              // }
                             }
                           },
                         ),

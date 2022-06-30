@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Passenger.g.dart';
@@ -24,6 +26,6 @@ class Passenger {
 
   String getInfo() {
     var split = passangerInfo.split(" ");
-    return "    ${split[0]} ${split[1]}\n${birthDate.substring(0, 10)}";
+    return " ${split[0]} ${split[1]}\n${birthDate.substring(0, 10)}";
   }
 }

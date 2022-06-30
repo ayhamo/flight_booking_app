@@ -176,7 +176,7 @@ class HomePageState extends State<HomePage> {
                           const SizedBox(height: 5),
                           const InfoText(
                             type: 'Address',
-                            text: 'Sile, Turkey',
+                            text: 'Earth, Turkey',
                           ),
                           const SizedBox(height: 20),
                           Container(
@@ -247,7 +247,7 @@ class HomePageState extends State<HomePage> {
                                   SizedBox(height: 5),
                                   InfoText(
                                     type: 'Address',
-                                    text: 'Sile, Turkey',
+                                    text: 'Earth, Turkey',
                                   )
                                 ],
                               ),
@@ -272,7 +272,8 @@ class HomePageState extends State<HomePage> {
                           const SizedBox(height: 5),
                           InkWell(
                             onTap: () async => await launchUrl(Uri.parse(
-                                "http://localhost:5007/swagger/index.html#/Master/Master_Login")),
+                                //"http://localhost:5007/swagger/index.html#/Master/Master_Login"
+                                "https://app.vectary.com/p/1i68M8Ewi02jPD9mYZqw60")),
                             child: const Text(
                               'Master Login',
                               style: TextStyle(

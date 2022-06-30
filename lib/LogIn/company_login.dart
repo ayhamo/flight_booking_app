@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -200,31 +199,39 @@ class _CompanyLoginState extends State<CompanyLogin> {
                               )),
                           onTap: () async {
                             if ((_formKey.currentState!.validate())) {
-                              try {
-                                String email =
-                                    emailController.text.replaceAll("@", "%40");
-                                response = await ApiController.post(
-                                    "/Company/login?email=$email&password=${passController.text}");
-                                if (response.statusCode == 200) {
-                                  if (response.data["message"] ==
-                                      "Account Not Found Or Pending approval.") {
-                                    Data.apiError(
-                                        context, response.data["message"]);
-                                  } else {
-                                    Data.company =
-                                        Company.fromJson(response.data);
-                                    Router.neglect(
-                                        context, () => context.go('/'));
-                                  }
-                                }
+                              Data.company = Company(
+                                  id: 1,
+                                  name: "Turkish Airlines",
+                                  email: emailController.text,
+                                  password: passController.text);
+                              Router.neglect(context, () => context.go('/'));
+                              setState(() {});
 
-                                setState(() {});
-                              } on Exception catch (e) {
-                                Data.apiError(context, e.toString());
-                                if (kDebugMode) {
-                                  print(e);
-                                }
-                              }
+                              // try {
+                              //   String email =
+                              //       emailController.text.replaceAll("@", "%40");
+                              //   response = await ApiController.post(
+                              //       "/Company/login?email=$email&password=${passController.text}");
+                              //   if (response.statusCode == 200) {
+                              //     if (response.data["message"] ==
+                              //         "Account Not Found Or Pending approval.") {
+                              //       Data.apiError(
+                              //           context, response.data["message"]);
+                              //     } else {
+                              //       Data.company =
+                              //           Company.fromJson(response.data);
+                              //       Router.neglect(
+                              //           context, () => context.go('/'));
+                              //     }
+                              //   }
+                              //
+                              //   setState(() {});
+                              // } on Exception catch (e) {
+                              //   Data.apiError(context, e.toString());
+                              //   if (kDebugMode) {
+                              //     print(e);
+                              //   }
+                              // }
                             }
                           },
                         ),

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flight_booking_app/Models/Company.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -207,51 +207,80 @@ class _CompanyRegisterState extends State<CompanyRegister> {
                               )),
                           onTap: () async {
                             if ((_formKey.currentState!.validate())) {
-                              try {
-                                String email =
-                                    emailController.text.replaceAll("@", "%40");
-                                // /Company/register?CompanyName=kkk&email=kkk%40k.com&password=123
-                                response = await ApiController.post(
-                                    "/Company/register?CompanyName=${companyNameController.text}&email=$email"
-                                    "&password=${passController.text}");
-                                if (response.statusCode == 200) {
-                                  if (response.data["message"] ==
-                                      "Email Already Taken.") {
-                                    Data.apiError(
-                                        context, response.data["message"]);
-                                  } else {
-                                    showDialog<void>(
-                                        context: context,
-                                        barrierDismissible: true,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text(
-                                              'ALERT',
-                                              style: TextStyle(
-                                                  color: Colors.green),
-                                            ),
-                                            content: const Text(
-                                                'You Have Registered And Your \nRequest Is Pending Approval',
-                                                style: TextStyle(fontSize: 17)),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('OK'),
-                                                onPressed: () {
-                                                  context.go('/companyLogin');
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  }
-                                }
-                                setState(() {});
-                              } on Exception catch (e) {
-                                Data.apiError(context, e.toString());
-                                if (kDebugMode) {
-                                  print(e);
-                                }
-                              }
+                              Data.company = Company(
+                                  id: 1,
+                                  name: companyNameController.text,
+                                  email: emailController.text,
+                                  password: passController.text);
+                              showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                        'ALERT',
+                                        style: TextStyle(color: Colors.green),
+                                      ),
+                                      content: const Text(
+                                          'You Have Registered And Your \nRequest Is Pending Approval',
+                                          style: TextStyle(fontSize: 17)),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('APPROVE ME'),
+                                          onPressed: () {
+                                            context.go('/');
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
+                              setState(() {});
+
+                              //   try {
+                              //     String email =
+                              //         emailController.text.replaceAll("@", "%40");
+                              //     // /Company/register?CompanyName=kkk&email=kkk%40k.com&password=123
+                              //     response = await ApiController.post(
+                              //         "/Company/register?CompanyName=${companyNameController.text}&email=$email"
+                              //         "&password=${passController.text}");
+                              //     if (response.statusCode == 200) {
+                              //       if (response.data["message"] ==
+                              //           "Email Already Taken.") {
+                              //         Data.apiError(
+                              //             context, response.data["message"]);
+                              //       } else {
+                              //         showDialog<void>(
+                              //             context: context,
+                              //             barrierDismissible: true,
+                              //             builder: (BuildContext context) {
+                              //               return AlertDialog(
+                              //                 title: const Text(
+                              //                   'ALERT',
+                              //                   style: TextStyle(
+                              //                       color: Colors.green),
+                              //                 ),
+                              //                 content: const Text(
+                              //                     'You Have Registered And Your \nRequest Is Pending Approval',
+                              //                     style: TextStyle(fontSize: 17)),
+                              //                 actions: <Widget>[
+                              //                   TextButton(
+                              //                     child: const Text('OK'),
+                              //                     onPressed: () {
+                              //                       context.go('/companyLogin');
+                              //                     },
+                              //                   ),
+                              //                 ],
+                              //               );
+                              //             });
+                              //       }
+                              //     }
+                              //     setState(() {});
+                              //   } on Exception catch (e) {
+                              //     Data.apiError(context, e.toString());
+                              //     if (kDebugMode) {
+                              //       print(e);
+                              //     }
+                              //   }
                             }
                           },
                         ),

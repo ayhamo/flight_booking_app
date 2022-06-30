@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flight_booking_app/Models/FlightTicketDetails.dart';
+import 'package:flight_booking_app/Models/Ticket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -8,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../Data.dart';
+import '../Models/Passenger.dart';
 import '../Models/selected_flight.dart';
 import '../api_controller.dart';
 import '../home_widgets/responsive.dart';
@@ -490,73 +492,147 @@ class PaymentState extends State<Payment> {
                                         content: Text(
                                             "Please fill the required info!")));
                               } else {
-                                try {
-                                  EasyLoading.show(status: 'Please Wait...');
-                                  response = await ApiController.get(
-                                      "/Ticket/BuyTicket?ticketContentId=${Data.selectedFlight.id}&userId=$loggedInID&cabinType=${Data.selectedFlight.cClass}&quantity=${Data.selectedFlight.numPpl}");
-                                  if (response.statusCode == 200) {
-                                    if (response.data["Message"] !=
-                                        "Purchase Completed") {
-                                      Data.apiError(context, null);
-                                    } else {
-                                      for (int i = 0;
-                                          i <
-                                              (int.parse(Data
-                                                      .selectedFlight.numPpl) -
-                                                  1);
-                                          i++) {
-                                        await ApiController.get(
-                                            "/Ticket/getpassenger?ticketContentId=${Data.selectedFlight.id}&name=${passengersFirstNameControllers[i].text}&Surname=${passengersLastNameControllers[i].text}&birthDate=${passengersBirthControllers[i].text}T00%3A00%3A00");
-                                      }
-                                      await EasyLoading.showSuccess(
-                                          'Thanks for waiting!');
-                                      EasyLoading.dismiss();
-                                      showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return ButtonBarTheme(
-                                            data: const ButtonBarThemeData(
-                                                alignment:
-                                                    MainAxisAlignment.center),
-                                            child: AlertDialog(
-                                              title: const Icon(
-                                                Icons
-                                                    .check_circle_outline_rounded,
-                                                color: Colors.green,
-                                                size: 50,
-                                              ),
-                                              content: const Text(
-                                                  'Thank you for your Booking\n PNR: J32E4A',
-                                                  textAlign: TextAlign.center),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                    onPressed: () {
-                                                      Data.selectedFlight =
-                                                          SelectedFlight
-                                                              .resetFlight();
-                                                      context.go("/");
-                                                    },
-                                                    child: const Text('OK',
-                                                        style: TextStyle(
-                                                            fontSize: 17,
-                                                            color: Colors
-                                                                .lightGreen))),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    }
-                                  }
+                                EasyLoading.show(status: 'Please Wait...');
 
-                                  setState(() {});
-                                } on Exception catch (e) {
-                                  Data.apiError(context, e.toString());
-                                  if (kDebugMode) {
-                                    print(e);
-                                  }
+                                List<Passenger> pList = [];
+                                for (int i = 0;
+                                    i <
+                                        (int.parse(Data.selectedFlight.numPpl) -
+                                            1);
+                                    i++) {
+                                  pList.add(Passenger(
+                                      id: Data.selectedFlight.id,
+                                      ticketId: Data.selectedFlight.id,
+                                      passangerInfo:
+                                          "${passengersFirstNameControllers[i].text} ${passengersLastNameControllers[i].text}",
+                                      birthDate:
+                                          "${passengersBirthControllers[i].text}T00%3A00%3A00"));
                                 }
+
+                                Data.userFlights.add(FlightTicketDetails(
+                                    ticket: Ticket(
+                                        id: Data.selectedFlight.id,
+                                        ticketContentId: Data.selectedFlight.id,
+                                        ownerId: 1,
+                                        price: Data.selectedFlight.price,
+                                        quantity: int.parse(
+                                            Data.selectedFlight.numPpl),
+                                        cabinType: Data.selectedFlight.cClass,
+                                        companyName:
+                                            Data.selectedFlight.companyName,
+                                        from: Data.selectedFlight.from,
+                                        to: Data.selectedFlight.to,
+                                        departureDate:
+                                            Data.selectedFlight.depDate,
+                                        landingDate:
+                                            Data.selectedFlight.landingTime),
+                                    passengers: pList));
+
+                                await EasyLoading.showSuccess(
+                                    'Thanks for waiting!');
+                                EasyLoading.dismiss();
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ButtonBarTheme(
+                                      data: const ButtonBarThemeData(
+                                          alignment: MainAxisAlignment.center),
+                                      child: AlertDialog(
+                                        title: const Icon(
+                                          Icons.check_circle_outline_rounded,
+                                          color: Colors.green,
+                                          size: 50,
+                                        ),
+                                        content: const Text(
+                                            'Thank you for your Booking\n PNR: J32E4A',
+                                            textAlign: TextAlign.center),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () {
+                                                Data.selectedFlight =
+                                                    SelectedFlight
+                                                        .resetFlight();
+                                                context.go("/");
+                                              },
+                                              child: const Text('OK',
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      color:
+                                                          Colors.lightGreen))),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+
+                                // try {
+                                //   EasyLoading.show(status: 'Please Wait...');
+                                //   response = await ApiController.get(
+                                //       "/Ticket/BuyTicket?ticketContentId=${Data.selectedFlight.id}&userId=$loggedInID&cabinType=${Data.selectedFlight.cClass}&quantity=${Data.selectedFlight.numPpl}");
+                                //   if (response.statusCode == 200) {
+                                //     if (response.data["Message"] !=
+                                //         "Purchase Completed") {
+                                //       Data.apiError(context, null);
+                                //     } else {
+                                //       for (int i = 0;
+                                //           i <
+                                //               (int.parse(Data
+                                //                       .selectedFlight.numPpl) -
+                                //                   1);
+                                //           i++) {
+                                //         await ApiController.get(
+                                //             "/Ticket/getpassenger?ticketContentId=${Data.selectedFlight.id}&name=${passengersFirstNameControllers[i].text}&Surname=${passengersLastNameControllers[i].text}&birthDate=${passengersBirthControllers[i].text}T00%3A00%3A00");
+                                //       }
+                                //       await EasyLoading.showSuccess(
+                                //           'Thanks for waiting!');
+                                //       EasyLoading.dismiss();
+                                //       showDialog(
+                                //         barrierDismissible: false,
+                                //         context: context,
+                                //         builder: (BuildContext context) {
+                                //           return ButtonBarTheme(
+                                //             data: const ButtonBarThemeData(
+                                //                 alignment:
+                                //                     MainAxisAlignment.center),
+                                //             child: AlertDialog(
+                                //               title: const Icon(
+                                //                 Icons
+                                //                     .check_circle_outline_rounded,
+                                //                 color: Colors.green,
+                                //                 size: 50,
+                                //               ),
+                                //               content: const Text(
+                                //                   'Thank you for your Booking\n PNR: J32E4A',
+                                //                   textAlign: TextAlign.center),
+                                //               actions: <Widget>[
+                                //                 TextButton(
+                                //                     onPressed: () {
+                                //                       Data.selectedFlight =
+                                //                           SelectedFlight
+                                //                               .resetFlight();
+                                //                       context.go("/");
+                                //                     },
+                                //                     child: const Text('OK',
+                                //                         style: TextStyle(
+                                //                             fontSize: 17,
+                                //                             color: Colors
+                                //                                 .lightGreen))),
+                                //               ],
+                                //             ),
+                                //           );
+                                //         },
+                                //       );
+                                //     }
+                                //   }
+                                //
+                                //   setState(() {});
+                                // } on Exception catch (e) {
+                                //   Data.apiError(context, e.toString());
+                                //   if (kDebugMode) {
+                                //     print(e);
+                                //   }
+                                // }
                               }
                             },
                           )),

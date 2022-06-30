@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -160,33 +159,35 @@ class _ForgetPassState extends State<ForgetPass> {
                                 )),
                             onTap: () async {
                               if ((_formKey.currentState!.validate())) {
-                                try {
-                                  int id;
-                                  String email = emailController.text
-                                      .replaceAll("@", "%40");
-                                  response = await ApiController.post(dropdownValue ==
-                                          "End-User"
-                                      ? "/User/CheckUserMailExists?email=$email"
-                                      : "/Company/CheckCompanyMailExist?email=$email");
-                                  if (response.statusCode == 200) {
-                                    if (response.data["message"] ==
-                                        "Account Not Found.") {
-                                      Data.apiError(
-                                          context, response.data["message"]);
-                                    } else {
-                                      id = response.data["id"];
-                                      context.push(
-                                          "/forgetPass/$id/${dropdownValue == "End-User" ? 0 : 1}");
-                                    }
-                                  }
-
-                                  setState(() {});
-                                } on Exception catch (e) {
-                                  Data.apiError(context, e.toString());
-                                  if (kDebugMode) {
-                                    print(e);
-                                  }
-                                }
+                                context.push(
+                                    "/forgetPass/1/${dropdownValue == "End-User" ? 0 : 1}");
+                                // try {
+                                //   int id;
+                                //   String email = emailController.text
+                                //       .replaceAll("@", "%40");
+                                //   response = await ApiController.post(dropdownValue ==
+                                //           "End-User"
+                                //       ? "/User/CheckUserMailExists?email=$email"
+                                //       : "/Company/CheckCompanyMailExist?email=$email");
+                                //   if (response.statusCode == 200) {
+                                //     if (response.data["message"] ==
+                                //         "Account Not Found.") {
+                                //       Data.apiError(
+                                //           context, response.data["message"]);
+                                //     } else {
+                                //       id = response.data["id"];
+                                //       context.push(
+                                //           "/forgetPass/$id/${dropdownValue == "End-User" ? 0 : 1}");
+                                //     }
+                                //   }
+                                //
+                                //   setState(() {});
+                                // } on Exception catch (e) {
+                                //   Data.apiError(context, e.toString());
+                                //   if (kDebugMode) {
+                                //     print(e);
+                                //   }
+                                // }
                               }
                             },
                           ),
