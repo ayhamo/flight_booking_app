@@ -94,13 +94,13 @@ class _UserLoginState extends State<UserLogin> {
                 margin: const EdgeInsets.only(),
                 height: 180,
                 width: 180,
-                child: Image.asset("images/logo.png"),
+                child: Image.asset("assets/images/logo.png"),
               ),
               Container(
                 margin: const EdgeInsets.only(),
                 height: 60,
                 width: 180,
-                child: Image.asset("images/logo_name.png"),
+                child: Image.asset("assets/images/logo_name.png"),
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
