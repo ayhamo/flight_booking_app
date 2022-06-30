@@ -26,6 +26,6 @@ class Passenger {
 
   String getInfo() {
     var split = passangerInfo.split(" ");
-    return " ${split[0]} ${split[1]}\n${birthDate.substring(0, 10)}";
+    return "${split[0]} ${split[1]}\n${birthDate.substring(0, 10)}";
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:avatar_glow/avatar_glow.dart';
@@ -8,11 +9,11 @@ import 'package:intl/intl.dart';
 
 import '../home_widgets/top_bar_contents.dart';
 import '../Data.dart';
+
 // ignore: unused_import
 import '../Models/FlightTicketDetails.dart';
 import '../api_controller.dart';
 import '../home_widgets/responsive.dart';
-
 
 class MyTickets extends StatefulWidget {
   const MyTickets({Key? key}) : super(key: key);
@@ -32,12 +33,55 @@ class MyTicketsState extends State<MyTickets> {
 
   Future _getTickets() async {
     Future.delayed(Duration(seconds: rng.nextInt(15)));
-    if(Data.userFlights.isEmpty){
+    //  String json = r'''
+    // [
+    //   {
+    //     "ticket": {
+    //       "id": 2,
+    //       "ticketContentId": 2,
+    //       "ownerId": 2,
+    //       "price": 2,
+    //       "quantity": 1,
+    //       "cabinType": "Economy",
+    //       "companyName": "lair1",
+    //       "from": "Bangladesh",
+    //       "to": "Turkey",
+    //       "departureDate": "2023-04-23",
+    //       "landingDate": "2023-04-23"
+    //     },
+    //     "passengers": [
+    //       {
+    //         "id": 7,
+    //         "ticketId": 2,
+    //         "passangerInfo": "Ayham Treter",
+    //         "birthDate": "2012-04-23T18:25:43.511"
+    //       },
+    //       {
+    //         "id": 7,
+    //         "ticketId": 2,
+    //         "passangerInfo": "Ayham Treter",
+    //         "birthDate": "2012-04-23T18:25:43.511"
+    //       },
+    //       {
+    //         "id": 7,
+    //         "ticketId": 2,
+    //         "passangerInfo": "Ayham Treter",
+    //         "birthDate": "2012-04-23T18:25:43.511"
+    //       }
+    //     ]
+    //   }
+    // ]''';
+    //  var jsonList = jsonDecode(json) as List<dynamic>;
+    //  Data.userFlights = FlightTicketDetails.parseFlightDetails(jsonList);
+    //  setState(() {
+    //    loading = false;
+    //  });
+    if (Data.userFlights.isEmpty) {
       setState(() {
         loading = false;
         noFlights = true;
       });
-    }else{
+    } else {
       setState(() {
         loading = false;
       });
@@ -515,7 +559,7 @@ class MyTicketsState extends State<MyTickets> {
                           mainAxisSpacing: 16,
                           crossAxisSpacing: 90,
                           childAspectRatio:
-                              ResponsiveWidget.isSmallScreen(context) ? 4 : 10),
+                              ResponsiveWidget.isSmallScreen(context) ? 2 : 10),
                       itemCount: Data.userFlights[index].passengers.length,
                       itemBuilder: (BuildContext ctx, i) {
                         return Container(
@@ -537,7 +581,7 @@ class MyTicketsState extends State<MyTickets> {
           Container(
             margin: const EdgeInsets.only(top: 20, bottom: 40),
             child: Image.asset(
-              "images/qr.png",
+              "assets/images/qr.png",
               width: 200,
               height: 200,
             ),
@@ -571,9 +615,9 @@ class MyTicketsState extends State<MyTickets> {
 
   String formatDate(bool isDep, int index) {
     if (isDep) {
-      return Data.userFlights[index].ticket.departureDate;//.substring(11, 16);
+      return Data.userFlights[index].ticket.departureDate; //.substring(11, 16);
     } else {
-      return Data.userFlights[index].ticket.landingDate;//.substring(11, 16);
+      return Data.userFlights[index].ticket.landingDate; //.substring(11, 16);
     }
   }
 }

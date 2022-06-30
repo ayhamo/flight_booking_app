@@ -59,10 +59,10 @@ class FlightSelectionState extends State<FlightSelection> {
       padding: EdgeInsets.only(
         top: widget.screenSize.height * 0.25,
         left: ResponsiveWidget.isSmallScreen(context)
-            ? widget.screenSize.width / 12
+            ? widget.screenSize.width / 50
             : widget.screenSize.width / 5,
         right: ResponsiveWidget.isSmallScreen(context)
-            ? widget.screenSize.width / 12
+            ? widget.screenSize.width / 50
             : widget.screenSize.width / 5,
       ),
       child: Container(
@@ -171,7 +171,7 @@ class FlightSelectionState extends State<FlightSelection> {
                   child: Container(
                     color: Colors.white,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 12),
+                        horizontal: 15, vertical: 12),
                     child: buildTravellersView(),
                   ),
                 ),
@@ -394,13 +394,13 @@ class FlightSelectionState extends State<FlightSelection> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
+             Text(
               'TRAVELLERS',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+              style: TextStyle(fontSize: ResponsiveWidget.isSmallScreen(context) ? 15.5 : 18, color: Colors.grey),
             ),
             Text(
               "$pplCount",
-              style: const TextStyle(fontSize: 42, color: Color(0xFF607d8b)),
+              style:  const TextStyle(fontSize: 42, color: Color(0xFF607d8b)),
             ),
           ],
         ),
@@ -435,13 +435,13 @@ class FlightSelectionState extends State<FlightSelection> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
+             Text(
               'CABIN CLASS',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+              style: TextStyle(fontSize: ResponsiveWidget.isSmallScreen(context) ? 14.9 :18, color: Colors.grey),
             ),
             Text(
               cabinClasses[index].toUpperCase(),
-              style: const TextStyle(fontSize: 24, color: Color(0xFF607d8b)),
+              style:  TextStyle(fontSize: ResponsiveWidget.isSmallScreen(context) ? 17.9 : 24, color: const Color(0xFF607d8b)),
             ),
           ],
         ),
