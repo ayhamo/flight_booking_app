@@ -46,7 +46,6 @@ dependencies:
   webviewx: ^0.2.1
   avatar_glow: ^2.0.2
   flutter_svg: ^1.0.3
-  dependencies:
   flutter_easyloading: ^3.0.3
 
 dev_dependencies:
